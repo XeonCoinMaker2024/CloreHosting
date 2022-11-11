@@ -16,7 +16,7 @@ if [ -x "$(command -v docker)" ]; then
     apt update -y && apt upgrade -y
 else
     apt update -y
-    apt install ca-certificates curl gnupg lsb-release tar -y
+    apt install ca-certificates curl gnupg lsb-release tar speedtest-cli ufw -y
     mkdir -p /etc/apt/keyrings
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
     chmod a+r /etc/apt/keyrings/docker.gpg
@@ -46,6 +46,7 @@ tar -xvf clore-hosting.tar -C /opt/clore-hosting/client &>/dev/null
 tar -xvf node-v16.18.1-linux-x64.tar.xz -C /opt/clore-hosting &>/dev/null
 rm /opt/clore-hosting/service.sh &>/dev/null
 rm /opt/clore-hosting/clore.sh &>/dev/null
+rm /etc/systemd/system/clore-hosting.service &>/dev/null
 tee -a /opt/clore-hosting/service.sh > /dev/null <<EOT
 #!/bin/bash
 CLIENT_DIR=/opt/clore-hosting/client
