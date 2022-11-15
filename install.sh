@@ -24,7 +24,7 @@ else
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     chmod a+r /etc/apt/keyrings/docker.gpg
     apt update -y
-    apt install install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+    apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 fi
 if [ -x "$(command -v docker)" ]; then
   docker network create   --driver=bridge   --subnet=172.18.0.0/16   --ip-range=172.18.0.0/16   --gateway=172.18.0.1   clore-br0 &>/dev/null
