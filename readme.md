@@ -36,17 +36,7 @@ You need to install latest non server driver, so with this output we will for ex
 ### 3. After finish, reboot machine
 `sudo reboot`
 
-### 4. Configure firewall
-
-CLORE.AI hosting provider software have baked in firewall rules to ensure that people renting your machine will not be able to access your local network, but they will be able to reach open ports on your machine, becouse it will act as a router, to prevent attempts of bruteforcing your ssh password you can allow your SSH only on your local network with ufw firewall
-
-```
-ufw enable
-ufw allow in on eth0 to any port 22 proto tcp
-```
-*change the `eth0` network interface to network interface of your local network
-
-### 5. Install clore.ai hosting server
+### 4. Install clore.ai hosting server
 
 We recommend to switch to root user to do this action
 `sudo -i`
@@ -60,7 +50,7 @@ When everything goes smoothly you will be show INSTALLATION COMPLETE message any
 `/opt/clore-hosting/clore.sh --init-token <token>`
 you will get then token from clore.ai when you create server
 
-### 6. Reboot
+### 5 Reboot
 After you succesfully connect your machine to clore.ai, you will do one final reboot and the machine should appear in your dashboard as running, you can set the price for what you will rent the machine and change it's availability
 
 ##### Final note
