@@ -11,7 +11,7 @@ On clore.ai marketplace users will be able to rent your system for various workl
 
 ### 1. Disable Flight Sheet on your machine
 
-In order to use hiveos on clore.ai as hosting provider you need to disable your flight sheet (stop mining on the machine with hive), but you will still be able to mine when your machine will not be rented with background job on clore.ai
+In order to use hiveos on clore.ai as hosting provider you need to unset your flight sheet (stop mining on the machine with hive), but you will still be able to mine when your machine will not be rented with background job on clore.ai
 
 ### 2. Start hive shell
 
@@ -20,6 +20,7 @@ Start and open hive shell
 ### 3. Install nvm, so that node modules can be updated to work under hive
 
 ```
+cd
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
 source ~/.bashrc
 nvm install v16.18.1
