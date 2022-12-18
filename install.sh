@@ -34,6 +34,11 @@ if [ -x "$(command -v docker)" ]; then
 else
   echo "docker instalation failure" && exit
 fi
+kernel_version=$(uname -r)
+hive_str='hiveos'
+if [[ "$kernel_version" == *"$hive_str"* ]]; then
+  docker pull cloreai/clore-hive-wireguard
+fi
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
       && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
       && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
