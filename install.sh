@@ -36,9 +36,6 @@ else
 fi
 kernel_version=$(uname -r)
 hive_str='hiveos'
-if [[ "$kernel_version" == *"$hive_str"* ]]; then
-  docker pull cloreai/clore-hive-wireguard
-fi
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
       && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
       && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
@@ -53,6 +50,12 @@ mkdir /opt/clore-hosting/wireguard/configs &>/dev/null
 mkdir /opt/clore-hosting/client &>/dev/null
 tar -xvf clore-hosting.tar -C /opt/clore-hosting/client &>/dev/null
 tar -xvf node-v16.18.1-linux-x64.tar.xz -C /opt/clore-hosting &>/dev/null
+if [[ "$kernel_version" == *"$hive_str"* ]]; then
+  docker pull cloreai/clore-hive-wireguard
+  apt remove wireguard-dkms -y
+  dpkg -i /opt/clore-hosting/client/wireguard-dkms_1.0.20200623-hiveos-5.4.0.deb
+fi
+rm /opt/clore-hosting/client/wireguard-dkms_1.0.20200623-hiveos-5.4.0.deb &>/dev/null
 rm /opt/clore-hosting/service.sh &>/dev/null
 rm /opt/clore-hosting/clore.sh &>/dev/null
 rm /etc/systemd/system/clore-hosting.service &>/dev/null
