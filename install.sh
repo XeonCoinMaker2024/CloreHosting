@@ -52,7 +52,7 @@ tar -xvf clore-hosting.tar -C /opt/clore-hosting/client &>/dev/null
 tar -xvf node-v16.18.1-linux-x64.tar.xz -C /opt/clore-hosting &>/dev/null
 if [[ "$kernel_version" == *"$hive_str"* ]]; then
   docker pull cloreai/clore-hive-wireguard
-  apt remove wireguard-dkms -y
+  apt remove wireguard-dkms -y &>/dev/null
   dpkg -i /opt/clore-hosting/client/wireguard-dkms_1.0.20200623-hiveos-5.4.0.deb
 fi
 rm /opt/clore-hosting/client/wireguard-dkms_1.0.20200623-hiveos-5.4.0.deb &>/dev/null

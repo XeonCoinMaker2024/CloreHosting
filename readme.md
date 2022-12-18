@@ -1,10 +1,13 @@
 ## Install CLORE.AI hosting
 
+If you want to host on HiveOS check this [Tutorial](https://gitlab.com/cloreai-public/hosting/-/blob/main/hiveos-install.md)
+
 ##### System requirements:
 * Minimum 32 GB disk
 * 4 GB RAM
 * NVIDIA GPU (if multiple per system, they all need to be the same model)
 * Ubuntu Server 22.04
+* CUDA 11.7
 
 ##### Talk about the workloads:
 On clore.ai marketplace users will be able to rent your system for various workloads, some workloads like 3D rendering or ai training will most of the time benefit from faster CPU and more RAM, it is not required by us, but if you will equip your system with more RAM and faster CPU you can ask higher price for it. Also you need to make sure that your system will be able to reach great stability, becouse unnecessary system downtime can cause issue to your customers.
