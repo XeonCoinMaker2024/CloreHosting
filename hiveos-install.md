@@ -21,9 +21,8 @@ Start and open hive shell
 
 ```
 cd
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-source ~/.bashrc
-nvm install v16.18.1
+curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+apt install nodejs -y
 ```
 
 
