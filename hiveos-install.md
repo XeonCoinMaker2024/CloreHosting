@@ -41,6 +41,7 @@ When everything goes smoothly you will be show INSTALLATION COMPLETE message
 
 ```
 cd /opt/clore-hosting/client
+rm -rf node_modules/
 npm update
 ```
 
