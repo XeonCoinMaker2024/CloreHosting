@@ -17,7 +17,7 @@ In order to use hiveos on clore.ai as hosting provider you need to unset your fl
 
 Start and open hive shell
 
-### 3. Install nvm, so that node modules can be updated to work under hive
+### 3. Install nodejs, so that node modules can be updated to work under hive
 
 ```
 cd
