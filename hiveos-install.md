@@ -2,7 +2,7 @@
 
 ##### System requirements:
 * Minimum 32 GB disk
-* 4 GB RAM
+* 4 GB RAM (ideally 16 GB+ ram, becouse it is in most time necessary for most AI workloads)
 * NVIDIA GPU (if multiple per system, they all need to be the same model)
 * Nvidia driver version 515.86.01
 
@@ -17,16 +17,8 @@ In order to use hiveos on clore.ai as hosting provider you need to unset your fl
 
 Start and open hive shell
 
-### 3. Install nodejs, so that node modules can be updated to work under hive
 
-```
-cd
-curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
-apt install nodejs -y
-```
-
-
-### 4. Install clore.ai hosting server
+### 3. Install clore.ai hosting server
 
 You can clone hosting repository and run the installer
 ```
@@ -36,33 +28,25 @@ cd hosting
 ```
 When everything goes smoothly you will be show INSTALLATION COMPLETE message
 
-### 5. Update node modules to work under hive
-
-```
-cd /opt/clore-hosting/client
-rm -rf node_modules/
-npm update
-```
-
-### 6. Install nvidia cuda toolkit
+### 4. Install nvidia cuda toolkit
 This is really important for functionality of nvidia gpu in docker on hiveos
 ```
 apt install nvidia-cuda-toolkit
 ```
 
-### 7. Reinstall nvidia driver
+### 5. Reinstall nvidia driver
 This version of nvidia driver was tested
 ```
 nvidia-driver-update 515.86.01 --force
 ```
 
 
-### 8. Login with your clore.ai token
+### 6. Login with your clore.ai token
 Run this with your machine token you got from clore.ai
 `/opt/clore-hosting/clore.sh --init-token <token>`
 
 
-### 9 Reboot
+### 7 Reboot
 After you succesfully connect your machine to clore.ai, you will do one final reboot and the machine should appear in your dashboard as running, you can set the price for what you will rent the machine and change it's availability
 
 ##### Final note

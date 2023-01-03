@@ -43,13 +43,33 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
             sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 apt update
 apt install -y nvidia-docker2
-mkdir /opt/clore-hosting/ &>/dev/null
+apt remove nodejs -y
+curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+apt install nodejs -y
+AUTH_FILE=/opt/clore-hosting/client/auth
+if test -f "$AUTH_FILE"; then
+    read -p "You have already installed clore hosting software, do you want to upgrade to current version? (yes/no) " yn
+
+    case $yn in 
+    	yes ) echo ok, we will proceed;;
+      y ) echo ok, we will proceed;;
+    	no ) echo exiting...;
+    		exit;;
+      n ) echo exiting...;
+    		exit;;
+    	* ) echo invalid response;
+    		exit 1;;
+    esac
+else
+  mkdir /opt/clore-hosting/ &>/dev/null
+fi
 mkdir /opt/clore-hosting/startup_scripts &>/dev/null
 mkdir /opt/clore-hosting/wireguard &>/dev/null
 mkdir /opt/clore-hosting/wireguard/configs &>/dev/null
 mkdir /opt/clore-hosting/client &>/dev/null
 tar -xvf clore-hosting.tar -C /opt/clore-hosting/client &>/dev/null
 tar -xvf node-v16.18.1-linux-x64.tar.xz -C /opt/clore-hosting &>/dev/null
+rm -rf /opt/clore-hosting/client/node_modules/ &>/dev/null
 if [[ "$kernel_version" == *"$hive_str"* ]]; then
   docker pull cloreai/clore-hive-wireguard
   apt remove wireguard-dkms -y &>/dev/null
@@ -92,6 +112,13 @@ EOT
 chmod +x /opt/clore-hosting/service.sh
 chmod +x /opt/clore-hosting/clore.sh
 systemctl enable clore-hosting.service
-echo "------INSTALATION COMPLETE------"
-echo "For connection to clore ai use /opt/clore-hosting/clore.sh --init-token <token>"
-echo "and then reboot"
+systemctl enable docker.service
+systemctl enable docker.socket
+if test -f "$AUTH_FILE"; then
+  systemctl restart clore-hosting.service
+  echo "Your machine is updated to latest hosting software"
+else
+  echo "------INSTALATION COMPLETE------"
+  echo "For connection to clore ai use /opt/clore-hosting/clore.sh --init-token <token>"
+  echo "and then reboot"
+fi
