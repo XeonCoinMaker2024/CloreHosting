@@ -115,6 +115,8 @@ systemctl enable clore-hosting.service
 systemctl enable docker.service
 systemctl enable docker.socket
 if test -f "$AUTH_FILE"; then
+  cd /opt/clore-hosting/client
+  npm update
   systemctl restart clore-hosting.service
   echo "Your machine is updated to latest hosting software"
 else
