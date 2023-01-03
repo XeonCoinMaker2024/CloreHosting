@@ -120,6 +120,8 @@ if test -f "$AUTH_FILE"; then
   systemctl restart clore-hosting.service
   echo "Your machine is updated to latest hosting software"
 else
+  cd /opt/clore-hosting/client
+  npm update
   echo "------INSTALATION COMPLETE------"
   echo "For connection to clore ai use /opt/clore-hosting/clore.sh --init-token <token>"
   echo "and then reboot"
