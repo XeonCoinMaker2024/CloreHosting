@@ -12,8 +12,14 @@ if [ "$(awk -F= '/^NAME/{print $2}' /etc/os-release)" != '"Ubuntu"' ]
   exit
 fi
 export DEBIAN_FRONTEND=noninteractive
+AUTH_FILE=/opt/clore-hosting/client/auth
 if [ -x "$(command -v docker)" ]; then
-    apt update -y && apt upgrade -y
+  apt update -y
+  if test -f "$AUTH_FILE"; then
+    echo '...'
+  else
+    apt upgrade -y
+  fi
 else
     apt update -y
     apt install ca-certificates curl gnupg lsb-release tar speedtest-cli ufw -y
@@ -30,7 +36,7 @@ if [ -x "$(command -v docker)" ]; then
   docker network create   --driver=bridge   --subnet=172.18.0.0/16   --ip-range=172.18.0.0/16   --gateway=172.18.0.1   clore-br0 &>/dev/null
   docker pull cloreai/ubuntu20.04-jupyter
   docker pull cloreai/clore-wireguard
-  docker pull cloreai/ubuntu-20.04-remote-desktop
+  docker pull cloreai/ubuntu-20.04-remote-desktop:1.1
 else
   echo "docker instalation failure" && exit
 fi
@@ -46,7 +52,6 @@ apt install -y nvidia-docker2
 apt remove nodejs -y
 curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
 apt install nodejs -y
-AUTH_FILE=/opt/clore-hosting/client/auth
 if test -f "$AUTH_FILE"; then
     read -p "You have already installed clore hosting software, do you want to upgrade to current version? (yes/no) " yn
 
@@ -118,7 +123,7 @@ if test -f "$AUTH_FILE"; then
   cd /opt/clore-hosting/client
   npm update
   systemctl restart clore-hosting.service
-  echo "Your machine is updated to latest hosting software"
+  echo "Your machine is updated to latest hosting software (v3)"
 else
   cd /opt/clore-hosting/client
   npm update
