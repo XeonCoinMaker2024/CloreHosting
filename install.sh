@@ -123,7 +123,7 @@ if test -f "$AUTH_FILE"; then
   cd /opt/clore-hosting/client
   npm update
   systemctl restart clore-hosting.service
-  echo "Your machine is updated to latest hosting software (v3)"
+  echo "Your machine is updated to latest hosting software (v3.1)"
 else
   cd /opt/clore-hosting/client
   npm update
