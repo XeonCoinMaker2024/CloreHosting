@@ -11,6 +11,12 @@ if [ "$(awk -F= '/^NAME/{print $2}' /etc/os-release)" != '"Ubuntu"' ]
   then echo "Only ubuntu is supported distro"
   exit
 fi
+WORKARG="false"
+for arg in "$@"; do
+  if [ "$arg" = "-nq" ]; then
+    WORKARG="true"
+  fi
+done
 export DEBIAN_FRONTEND=noninteractive
 AUTH_FILE=/opt/clore-hosting/client/auth
 if [ -x "$(command -v docker)" ]; then
@@ -36,14 +42,13 @@ if [ -x "$(command -v docker)" ]; then
   docker network create   --driver=bridge   --subnet=172.18.0.0/16   --ip-range=172.18.0.0/16   --gateway=172.18.0.1   clore-br0 &>/dev/null
   docker pull cloreai/ubuntu20.04-jupyter
   docker pull cloreai/clore-wireguard
-  docker pull cloreai/ubuntu-20.04-remote-desktop:1.1
 else
   echo "docker instalation failure" && exit
 fi
 kernel_version=$(uname -r)
 hive_str='hiveos'
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor --yes -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
       && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
             sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
             sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
@@ -52,7 +57,13 @@ apt install -y nvidia-docker2
 apt remove nodejs -y
 curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
 apt install nodejs -y
-if test -f "$AUTH_FILE"; then
+if [ "$WORKARG" = "true" ]; then
+  if test -f "$AUTH_FILE"; then
+    echo ''
+  else
+    mkdir /opt/clore-hosting/ &>/dev/null
+  fi
+elif test -f "$AUTH_FILE"; then
     read -p "You have already installed clore hosting software, do you want to upgrade to current version? (yes/no) " yn
 
     case $yn in 
@@ -123,7 +134,7 @@ if test -f "$AUTH_FILE"; then
   cd /opt/clore-hosting/client
   npm update
   systemctl restart clore-hosting.service
-  echo "Your machine is updated to latest hosting software (v3.1)"
+  echo "Your machine is updated to latest hosting software (v4.0)"
 else
   cd /opt/clore-hosting/client
   npm update
