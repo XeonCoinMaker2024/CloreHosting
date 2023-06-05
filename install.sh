@@ -127,6 +127,7 @@ WantedBy=multi-user.target
 EOT
 chmod +x /opt/clore-hosting/service.sh
 chmod +x /opt/clore-hosting/clore.sh
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 systemctl enable clore-hosting.service
 systemctl enable docker.service
 systemctl enable docker.socket
