@@ -55,13 +55,22 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
 apt update
 apt install -y nvidia-docker2
 apt remove nodejs -y
-curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
-apt install nodejs -y
+#curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+#apt install nodejs -y
 if [ "$WORKARG" = "true" ]; then
   if test -f "$AUTH_FILE"; then
     echo ''
   else
     mkdir /opt/clore-hosting/ &>/dev/null
+    echo '{
+    "runtimes": {
+        "nvidia": {
+            "path": "/usr/bin/nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}' | sudo tee /etc/docker/daemon.json > /dev/null
+    systemctl restart docker.service
   fi
 elif test -f "$AUTH_FILE"; then
     read -p "You have already installed clore hosting software, do you want to upgrade to current version? (yes/no) " yn
@@ -78,6 +87,15 @@ elif test -f "$AUTH_FILE"; then
     esac
 else
   mkdir /opt/clore-hosting/ &>/dev/null
+  echo '{
+    "runtimes": {
+        "nvidia": {
+            "path": "/usr/bin/nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}' | sudo tee /etc/docker/daemon.json > /dev/null
+    systemctl restart docker.service
 fi
 mkdir /opt/clore-hosting/startup_scripts &>/dev/null
 mkdir /opt/clore-hosting/wireguard &>/dev/null
@@ -131,14 +149,17 @@ systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 systemctl enable clore-hosting.service
 systemctl enable docker.service
 systemctl enable docker.socket
+export PATH="/opt/clore-hosting/node-v16.18.1-linux-x64/bin/:$PATH"
 if test -f "$AUTH_FILE"; then
   cd /opt/clore-hosting/client
-  npm update
+#  npm update
+  /opt/clore-hosting/node-v16.18.1-linux-x64/bin/node /opt/clore-hosting/node-v16.18.1-linux-x64/bin/npm update
   systemctl restart clore-hosting.service
   echo "Your machine is updated to latest hosting software (v4.0)"
 else
   cd /opt/clore-hosting/client
-  npm update
+#  npm update
+  /opt/clore-hosting/node-v16.18.1-linux-x64/bin/node /opt/clore-hosting/node-v16.18.1-linux-x64/bin/npm update
   echo "------INSTALATION COMPLETE------"
   echo "For connection to clore ai use /opt/clore-hosting/clore.sh --init-token <token>"
   echo "and then reboot"
