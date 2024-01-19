@@ -41,7 +41,7 @@ fi
 if [ -x "$(command -v docker)" ]; then
   docker network create   --driver=bridge   --subnet=172.18.0.0/16   --ip-range=172.18.0.0/16   --gateway=172.18.0.1   clore-br0 &>/dev/null
   docker pull cloreai/ubuntu20.04-jupyter
-  docker pull cloreai/clore-wireguard
+  docker pull cloreai/proxy:0.2
 else
   echo "docker instalation failure" && exit
 fi
